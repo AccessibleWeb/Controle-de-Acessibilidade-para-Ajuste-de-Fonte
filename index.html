@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botões Fixos</title>
+    <script>
+        function changeFontSize(action) {
+            // Seleciona todos os elementos de texto, exceto os botões personalizados
+            const elements = document.querySelectorAll('body *:not(.controls button):not(.controls):not(.icon)');
+
+            elements.forEach(element => {
+                const currentSize = parseFloat(window.getComputedStyle(element).fontSize);
+                const newSize = action === 'increase' ? currentSize + 2 : currentSize - 2;
+
+                // Define limites para o tamanho da fonte
+                if (newSize >= 12 && newSize <= 20) {
+                    element.style.fontSize = newSize + 'px';
+                }
+            });
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px; /* Tamanho inicial da fonte */
+            line-height: 1.6;
+        }
+        .controls {
+            position: fixed;
+            top: 10px; /* Distância do topo */
+            right: 20px; /* Alinha no lado direito */
+            display: flex;
+            gap: 5px; /* Espaço entre os botões */
+            z-index: 1000; /* Garante que os botões fiquem no topo */
+        }
+        .controls button {
+            width: 40px; /* Largura do botão */
+            height: 50px; /* Altura do botão */
+            font-size: 16px !important; /* Impede que o tamanho da fonte seja alterado */
+            font-weight: bold;
+            color: #fff;
+            border: none;
+            border-radius: 0 0 15px 15px; /* Arredonda o lado inferior esquerdo */
+            cursor: pointer;
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.2s, box-shadow 0.2s ease;
+        }
+        .controls button:hover {
+            transform: translateY(-5px); /* Move o botão levemente para cima */
+        }
+        .controls button.increase {
+            background: linear-gradient(135deg, #25D366, #1da851); /* Gradiente verde para aumentar */
+        }
+        .controls button.decrease {
+            background: linear-gradient(135deg, #FFA500, #FF7F00); /* Gradiente laranja */
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="increase" onclick="changeFontSize('increase')">
+            <span class="icon">+A</span>
+        </button>
+        <button class="decrease" onclick="changeFontSize('decrease')">
+            <span class="icon">-A</span>
+        </button>
+    </div>
+    <h1>Controle de Fonte</h1>
+    <p>Este exemplo mostra como evitar que os botões personalizados sejam afetados pelo ajuste de fonte.</p>
+    <p>Os botões permanecem fixos no topo direito e não mudam de tamanho.</p>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Tamanho de Fonte</title>
+    <script>
+        // Função para carregar o tamanho de fonte salvo no localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedFontSize = localStorage.getItem('fontSize'); // Obter tamanho salvo
+            if (savedFontSize) {
+                applyFontSize(savedFontSize); // Aplicar o tamanho salvo
+                console.log(`Tamanho de fonte carregado: ${savedFontSize}px`);
+            } else {
+                console.log('Nenhum tamanho de fonte salvo. Usando padrão.');
+            }
+        });
+
+        // Função para alterar o tamanho da fonte
+        function changeFontSize(action) {
+            const elements = document.querySelectorAll('body *:not(.controls button):not(.controls):not(.icon)');
+            let newSize = null; // Para salvar o novo tamanho
+
+            elements.forEach(element => {
+                const currentSize = parseFloat(window.getComputedStyle(element).fontSize); // Tamanho atual
+                newSize = action === 'increase' ? currentSize + 2 : currentSize - 2;
+
+                // Aplicar o tamanho se estiver nos limites
+                if (newSize >= 12 && newSize <= 20) {
+                    element.style.fontSize = newSize + 'px';
+                }
+            });
+
+            // Salvar no localStorage se o novo tamanho for válido
+            if (newSize >= 12 && newSize <= 20) {
+                localStorage.setItem('fontSize', newSize);
+                console.log(`Tamanho de fonte salvo: ${newSize}px`);
+            }
+        }
+
+        // Função para aplicar o tamanho salvo em todos os elementos
+        function applyFontSize(fontSize) {
+            const elements = document.querySelectorAll('body *:not(.controls button):not(.controls):not(.icon)');
+            elements.forEach(element => {
+                element.style.fontSize = fontSize + 'px';
+            });
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px; /* Tamanho inicial da fonte */
+            line-height: 1.6;
+        }
+        .controls {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #25D366;
+            color: #fff;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #1da851;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="changeFontSize('increase')">Aumentar</button>
+        <button onclick="changeFontSize('decrease')">Diminuir</button>
+    </div>
+    <h1>Controle de Tamanho de Fonte</h1>
+    <p>Este texto pode ter o tamanho ajustado de acordo com a preferência do usuário.</p>
+    <p>O tamanho da fonte será salvo e restaurado automaticamente na próxima visita.</p>
+</body>
+</html>
